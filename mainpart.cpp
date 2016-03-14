@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Header.h"
+#include <iostream>
 
 Matrix::Matrix(): rows(0), columns(0)//конструктор инициализации 
 {
@@ -12,7 +13,10 @@ Matrix::Matrix(): rows(0), columns(0)//конструктор инициализ
 
 Matrix::Matrix(int _rows, int _columns):rows(_rows),columns(_columns)//конструктор с параметрами 
 {
-	NewMemory();
+	_matrix = new int*[rows];
+
+	for (int i = 0; i< rows; i++)
+		_matrix[i] = new int[columns];
 	for (int i = 0; i < rows; i++) { //  обнуление массива
 		for (int j = 0; j < columns; j++) _matrix[i][j] = 0;
 	};
@@ -20,8 +24,13 @@ Matrix::Matrix(int _rows, int _columns):rows(_rows),columns(_columns)//конс�
 
 Matrix::Matrix(const Matrix & matrix):rows(matrix.rows),columns(matrix.columns)//конструктор копирования 
 {
-	NewMemory();
-	Copy_Matrix(matrix);
+	_matrix = new int*[rows];
+
+	for (int i = 0; i< rows; i++)
+		_matrix[i] = new int[columns];
+	for (int i = 0; i <rows; i++)
+		for (unsigned int j = 0; j < columns; j++)
+			_matrix[i][j] = matrix._matrix[i][j];
 }
 
 Matrix::~Matrix() // деструктор
@@ -57,38 +66,36 @@ void Matrix::Cout_Matrix() // вывод матрицы
 		cout << "\n";
 	};
 }
-void Matrix::Copy_Matrix(const Matrix & matrix1) // копирование матрицы 
-{
-	for (int i = 0; i <rows; i++)
-		for (unsigned int j = 0; j < columns; j++)
-			_matrix[i][j] = matrix1._matrix[i][j];
-}
 
-Matrix & Matrix::operator=(const Matrix & matrix1)// перегрузка оператора = 
-{
-	Copy_Matrix(matrix1);
+
+Matrix& Matrix::operator =(const Matrix& matrix1) {
+	if (this != &matrix1) {
+		(Matrix(matrix1)).swap(*this);
+	}
 	return *this;
 }
-Matrix operator+(const Matrix &firstMatrix, const Matrix &secondMatrix) {//перегружаем оператор + 
-	Matrix result(firstMatrix.rows, firstMatrix.columns);//создаем новую матрицу 
-
+Matrix Matrix::operator +(const Matrix &firstMatrix) {
 	
-	for (int i = 0; i < result.rows; i++)
-		for (int j = 0; j < result.columns; j++)
-			result._matrix[i][j] = firstMatrix._matrix[i][j] + secondMatrix._matrix[i][j];
-			
+	Matrix result(this->rows, this->columns);
+	for (int i = 0; i < this->rows; i++) {
+		for (int j = 0; j < this->columns; j++) {
+			result[i][j] = firstMatrix._matrix[i][j] + this->_matrix[i][j];
+		}
+	}
 	return result;
+}
 
-};
 
-Matrix operator*(const Matrix &firstMatrix, const Matrix &secondMatrix) {//перегружаем оператор * 
+Matrix Matrix::operator *(int num) {
 	
-	Matrix result(firstMatrix.rows, firstMatrix.columns);
-	for (int i = 0; i < result.rows; i++)
-		for (int j = 0; j < result.columns; j++)
-			result._matrix[i][j] = firstMatrix._matrix[i][j] * secondMatrix._matrix[i][j];
+	Matrix result(this->rows, this->columns);
+	for (int i = 0; i < this->rows; i++) {
+		for (int j = 0; j < this->columns; j++) {
+			result._matrix[i][j] = this->_matrix[i][j] * num;
+		}
+	}
 	return result;
-};
+}
 
 int Matrix::get_rows() // получаем кол-во строк
 {
@@ -100,19 +107,18 @@ int Matrix::get_columns()// получаем кол-во столбцов
 	return columns;
 }
 
-void Matrix::NewMemory() // выделяем память под массив
-{
-	_matrix = new int*[rows];
-
-	for (int i = 0; i < rows; i++)
-		_matrix[i] = new int[columns];
-}
 int* Matrix::operator [] (int i)// перегружаем оператор [] на входе получили номер строки
 {
 	int *Getline = new int[columns];// выделяем память под одномерный массив типа int на хранение данных столбцов строки 
 	for (int j = 0; j < columns; j++)
 		Getline[j] = _matrix[i - 1][j];
 	return Getline;
+
+}
+void Matrix::swap(Matrix & m1) {
+	std::swap(m1._matrix, _matrix);
+	std::swap(m1.columns, columns);
+	std::swap(m1.rows, rows);
 
 }
 
