@@ -1,4 +1,4 @@
-#include <iostream>
+
 #include <fstream> 
 #include <string> 
 using namespace std;
@@ -10,15 +10,14 @@ public:
 	~Matrix();
 	void Get_Matrix(string s);
 	void Cout_Matrix();
-	void Copy_Matrix(const Matrix &matrix);
 	Matrix &operator=(const Matrix &matrix);
-	friend Matrix operator+(const Matrix &firstMatrix, const Matrix &secondMatrix);
-	friend Matrix operator*(const Matrix &firstMatrix, const Matrix &secondMatrix);
+	Matrix operator +(const Matrix& firstMatrix);
+	Matrix operator *(int num);
 	int* operator [](int i);
-	void   NewMemory();
 	int get_rows();
 	int get_columns();
 private:
+	void swap(Matrix & m1);
 	string s{};
 	int rows{};
 	int columns{};
