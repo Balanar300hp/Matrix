@@ -4,28 +4,22 @@
 #include "stdafx.h"
 #include "Header.h"
 
-Matrix::Matrix() //конструктор инициализации 
+Matrix::Matrix(): rows(0), columns(0)//конструктор инициализации 
 {
-	rows = 0;
-	columns = 0;
 	_matrix = new int*[0];
 	_matrix[0] = new int[0];
 }
 
-Matrix::Matrix(int _rows, int _columns)//конструктор с параметрами 
+Matrix::Matrix(int _rows, int _columns):rows(_rows),columns(_columns)//конструктор с параметрами 
 {
-	rows = _rows; //строки
-	columns = _columns;//столбцы
 	NewMemory();
 	for (int i = 0; i < rows; i++) { //  обнуление массива
 		for (int j = 0; j < columns; j++) _matrix[i][j] = 0;
 	};
 }
 
-Matrix::Matrix(const Matrix & matrix)//конструктор копирования 
+Matrix::Matrix(const Matrix & matrix):rows(matrix.rows),columns(matrix.columns)//конструктор копирования 
 {
-	rows = matrix.rows;
-	columns = matrix.columns;
 	NewMemory();
 	Copy_Matrix(matrix);
 }
@@ -54,7 +48,7 @@ void Matrix::Get_Matrix(string s2) // получаем матрицу из фа�
 		exit(0);
 	}
 }
-inline void Matrix::Cout_Matrix() // вывод матрицы
+void Matrix::Cout_Matrix() // вывод матрицы
 {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
@@ -63,54 +57,37 @@ inline void Matrix::Cout_Matrix() // вывод матрицы
 		cout << "\n";
 	};
 }
-inline void Matrix::Copy_Matrix(const Matrix & matrix) // копирование матрицы 
+void Matrix::Copy_Matrix(const Matrix & matrix1) // копирование матрицы 
 {
 	for (int i = 0; i <rows; i++)
 		for (unsigned int j = 0; j < columns; j++)
-			_matrix[i][j] = matrix._matrix[i][j];
+			_matrix[i][j] = matrix1._matrix[i][j];
 }
 
-inline Matrix & Matrix::operator=(const Matrix & matrix)// перегрузка оператора = 
+Matrix & Matrix::operator=(const Matrix & matrix1)// перегрузка оператора = 
 {
-	Copy_Matrix(matrix);
+	Copy_Matrix(matrix1);
 	return *this;
 }
-
-void Matrix::Set(int row, int columns, int value) // ставим значения матрице при сложении или умножении 
-{
-	_matrix[row][columns] = value;
-}
-int Matrix::Get(int row, int columns) const // достаем определенный элемент из матрицы 
-{
-	return _matrix[row][columns];
-}
-
-void Matrix::GetSumRows(const Matrix &firstMatrix, const Matrix &secondMatrix, int i) // сумма построчно
-{
-	for (int j = 0; j < get_columns(); j++)
-		Set(i, j, firstMatrix.Get(i, j) + secondMatrix.Get(i, j));// вызываем функцию set, передаем три параметра: номер строки, столбца, значение после операции 
-}
-
-void Matrix::GetCompositionRows(const Matrix &firstMatrix, const Matrix &secondMatrix, int i) // произведение построчно
-{
-	for (int j = 0; j < get_columns(); j++)
-		Set(i, j, firstMatrix.Get(i, j) * secondMatrix.Get(i, j));// вызываем функцию set, передаем три параметра: номер строки, столбца, значение после операции 
-}
-
 Matrix operator+(const Matrix &firstMatrix, const Matrix &secondMatrix) {//перегружаем оператор + 
-	Matrix matrix(firstMatrix.rows, firstMatrix.columns);//создаем новую матрицу 
+	Matrix result(firstMatrix.rows, firstMatrix.columns);//создаем новую матрицу 
 
-	for (int i = 0; i < matrix.rows; i++)
-		matrix.GetSumRows(firstMatrix, secondMatrix, i);
-	return matrix;
+	
+	for (int i = 0; i < result.rows; i++)
+		for (int j = 0; j < result.columns; j++)
+			result._matrix[i][j] = firstMatrix._matrix[i][j] + secondMatrix._matrix[i][j];
+			
+	return result;
 
 };
 
 Matrix operator*(const Matrix &firstMatrix, const Matrix &secondMatrix) {//перегружаем оператор * 
-	Matrix matrix(firstMatrix.rows, firstMatrix.columns);
-	for (int i = 0; i < matrix.rows; i++)
-		matrix.GetCompositionRows(firstMatrix, secondMatrix, i);
-	return matrix;
+	
+	Matrix result(firstMatrix.rows, firstMatrix.columns);
+	for (int i = 0; i < result.rows; i++)
+		for (int j = 0; j < result.columns; j++)
+			result._matrix[i][j] = firstMatrix._matrix[i][j] * secondMatrix._matrix[i][j];
+	return result;
 };
 
 int Matrix::get_rows() // получаем кол-во строк
