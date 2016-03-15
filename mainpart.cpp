@@ -26,11 +26,14 @@ Matrix::Matrix(const Matrix & matrix):rows(matrix.rows),columns(matrix.columns)/
 {
 	_matrix = new int*[rows];
 
-	for (int i = 0; i< rows; i++)
+	for (int i = 0; i < rows; ++i)
 		_matrix[i] = new int[columns];
-	for (int i = 0; i <rows; i++)
-		for (unsigned int j = 0; j < columns; j++)
+
+
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < columns; ++j)
 			_matrix[i][j] = matrix._matrix[i][j];
+	}
 }
 
 Matrix::~Matrix() // деструктор
@@ -86,16 +89,22 @@ Matrix Matrix::operator +(const Matrix &firstMatrix) {
 }
 
 
-Matrix Matrix::operator *(int num) {
-	
-	Matrix result(this->rows, this->columns);
-	for (int i = 0; i < this->rows; i++) {
-		for (int j = 0; j < this->columns; j++) {
-			result._matrix[i][j] = this->_matrix[i][j] * num;
+Matrix Matrix::operator *(const Matrix &m) {
+	Matrix result(this->rows, m.columns);
+	int a = 0;
+
+	for (int row = 0; row < this->rows; row++) {
+		for (int col = 0; col < m.columns; col++) {
+			a = 0;
+			for (int i = 0; i < this->columns; i++) {
+				a = a + this->_matrix[row][i] * m._matrix[i][col];
+			}
+			result._matrix[row][col] = a;
 		}
 	}
 	return result;
 }
+
 
 int Matrix::get_rows() // получаем кол-во строк
 {
@@ -107,12 +116,9 @@ int Matrix::get_columns()// получаем кол-во столбцов
 	return columns;
 }
 
-int* Matrix::operator [] (int i)// перегружаем оператор [] на входе получили номер строки
+int* Matrix::operator [] (int index)// перегружаем оператор [] на входе получили номер строки
 {
-	int *Getline = new int[columns];// выделяем память под одномерный массив типа int на хранение данных столбцов строки 
-	for (int j = 0; j < columns; j++)
-		Getline[j] = _matrix[i - 1][j];
-	return Getline;
+	return this->_matrix[index];
 
 }
 void Matrix::swap(Matrix & m1) {
