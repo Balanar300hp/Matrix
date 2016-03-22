@@ -25,12 +25,8 @@ Matrix::Matrix(int _rows, int _columns):rows(_rows),columns(_columns)//конс�
 Matrix::Matrix(const Matrix & matrix):rows(matrix.rows),columns(matrix.columns)//конструктор копирования 
 {
 	_matrix = new int*[rows];
-
-	for (int i = 0; i < rows; ++i)
-		_matrix[i] = new int[columns];
-
-
 	for (int i = 0; i < rows; ++i) {
+		_matrix[i] = new int[columns];
 		for (int j = 0; j < columns; ++j)
 			_matrix[i][j] = matrix._matrix[i][j];
 	}
