@@ -1,4 +1,6 @@
-
+#ifndef Matrix_h
+#define Matrix_h
+#pragma once
 #include <fstream> 
 #include <string> 
 using namespace std;
