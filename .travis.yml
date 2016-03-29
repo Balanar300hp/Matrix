@@ -1,1 +1,8 @@
-./configure && make && make test
+language: cpp
+sudo: required
+dist: trusty
+compiler:
+- clang
+os:
+- linux
+- osx
