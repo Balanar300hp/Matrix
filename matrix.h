@@ -1,3 +1,7 @@
+#pragma once
+#ifndef MATR_H
+#define MATR_H
+#include "stdafx.h"
 #include <fstream> 
 #include <string> 
 using namespace std;
@@ -13,12 +17,12 @@ public:
 	void Cout_Matrix();
 	Matrix &operator=(const Matrix &matrix);
 	Matrix operator +(const Matrix& firstMatrix);
-	Matrix operator *(int num);
+	Matrix operator *(int num);    
 	T* operator [](int i);
 	int get_rows();
 	int get_columns();
-	friend std::ostream & operator<< <>(std::ostream & output, const Matrix & matrix); 
-	friend std::istream & operator>> <>(std::istream & input, Matrix & matrix); 
+	friend std::ostream & operator<< <>(std::ostream & output, const Matrix & matrix);
+	friend std::istream & operator>> <>(std::istream & input, Matrix & matrix);
 private:
 	void swap(Matrix & m1);
 	string s{};
@@ -26,3 +30,4 @@ private:
 	int columns{};
 	int **_matrix{};
 };
+#endif
