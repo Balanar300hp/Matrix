@@ -72,9 +72,9 @@ Matrix<T>::~Matrix() // деструктор
 template <typename T>
 bool Matrix<T>::operator == (const Matrix<T> &matr) 
 {
-	if (rows!=matr.rows || columns!=matr.columns) 
+if (this->rows!=matr.rows || this->columns!=matr.columns) 
 	{
-		return false;
+	throw "Wrong sizes of matrixes\n";
 	}
 
 	for (int i = 0; i < rows; i++) 
@@ -129,6 +129,10 @@ void Matrix<T>::Cout_Matrix() // вывод матрицы
 
 template <typename T>
 Matrix<T>& Matrix<T>::operator =(const Matrix<T>& matrix1) {
+	if (this->rows!=matrix1.rows || this->columns!=matrix1.columns) 
+	{
+	throw "Wrong sizes of matrixes\n";
+	}
 	if (this != &matrix1) {
 		(Matrix(matrix1)).swap(*this);
 	}
@@ -136,7 +140,10 @@ Matrix<T>& Matrix<T>::operator =(const Matrix<T>& matrix1) {
 }
 template <typename T>
 Matrix<T> Matrix<T>::operator +(const Matrix<T> &firstMatrix) {
-	
+	if (this->rows!=firstMatrix.rows || this->columns!=firstMatrix.columns) 
+	{
+	throw "Wrong sizes of matrixes\n";
+	}
 	Matrix result(this->rows, this->columns);
 	for (int i = 0; i < this->rows; i++) {
 		for (int j = 0; j < this->columns; j++) {
@@ -148,6 +155,11 @@ Matrix<T> Matrix<T>::operator +(const Matrix<T> &firstMatrix) {
 
 template <typename T>
 Matrix<T> Matrix<T>::operator *(const Matrix<T> &m) {
+if (this->rows!=m.rows || this->columns!=m.columns) 
+	{
+	throw "Wrong sizes of matrixes\n";
+	}row "Wrong sizes of matrixes\n";
+	}
 	Matrix result(this->rows, m.columns);
 	int a = 0;
 
