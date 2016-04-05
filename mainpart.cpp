@@ -1,58 +1,61 @@
-#include <matrix.h> 
+#include "stdafx.h"
+#include "Matrix.h" 
 #include <iostream>
+
+#ifndef MATR_CPP
+#define MATR_CPP
+
 template <typename T>
-std::ostream &operator << (ostream &os, const Matrix<T> &temp)
-{
-	for (int i = 0; i < temp.rows; i++)
-	{
-		for (int j = 0; j < temp.columns; j++)
-		{
+std::ostream &operator << (ostream &os, const Matrix<T> &temp) {
+	for (int i = 0; i < temp.rows; i++) {
+		for (int j = 0; j < temp.columns; j++) {
 			os << temp._matrix[i][j] << " ";
-		} 
+		}
 		os << endl;
 	}
 	return os;
 }
+
 template <typename T>
-std::istream &operator >> (istream &input, Matrix<T> &matr)
-{
-    for (int i = 0; i < matr.rows; i++) 
-    {
-        for (int j = 0; j < matr.columns; j++) 
-        {
-            if (!(input >> matr._matrix[i][j]))
-            {
-                throw "exception in fill matrix";
-            }
-        }
-    }
-    return input;
+std::istream &operator >> (istream &input, Matrix<T> &matr) {
+	for (int i = 0; i < matr.rows; i++) {
+		for (int j = 0; j < matr.columns; j++) {
+			if (!(input >> matr._matrix[i][j])) {
+				throw "exception in fill matrix";
+			}
+		}
+	}
+	return input;
 }
+
+template <typename T>
 void Matrix::swap(Matrix & m1) {
 	std::swap(m1._matrix, _matrix);
 	std::swap(m1.columns, columns);
 	std::swap(m1.rows, rows);
-
 }
+
 template <typename T>
-Matrix<T>::Matrix(): rows(0), columns(0),num(0)//конструктор инициализации 
+Matrix<T>::Matrix() : rows(0), columns(0), num(0) //конструктор инициализации 
 {
 	_matrix = new T*[0];
 	_matrix[0] = new T[0];
 }
+
 template <typename T>
-Matrix<T>::Matrix(int _rows, int _columns):rows(_rows),columns(_columns)//конструктор с параметрами 
+Matrix<T>::Matrix(int _rows, int _columns) :rows(_rows), columns(_columns) //конструктор с параметрами 
 {
 	_matrix = new T*[rows];
 
-	for (int i = 0; i< rows; i++)
+	for (int i = 0; i < rows; i++)
 		_matrix[i] = new T[columns];
 	for (int i = 0; i < rows; i++) { //  обнуление массива
-		for (int j = 0; j < columns; j++) _matrix[i][j] = 0;
-	};
+		for (int j = 0; j < columns; j++)
+			_matrix[i][j] = 0;
+	}
 }
- template <typename T>
-Matrix<T>::Matrix(const Matrix<T> & matrix):rows(matrix.rows),columns(matrix.columns)//конструктор копирования 
+template <typename T>
+Matrix<T>::Matrix(const Matrix<T> & matrix) :rows(matrix.rows), columns(matrix.columns)//конструктор копирования 
 {
 	_matrix = new T*[rows];
 	for (int i = 0; i < rows; ++i) {
@@ -61,6 +64,7 @@ Matrix<T>::Matrix(const Matrix<T> & matrix):rows(matrix.rows),columns(matrix.col
 			_matrix[i][j] = matrix._matrix[i][j];
 	}
 }
+
 template <typename T>
 Matrix<T>::~Matrix() // деструктор
 {
@@ -69,38 +73,33 @@ Matrix<T>::~Matrix() // деструктор
 
 	delete[] _matrix;
 }
+
 template <typename T>
-bool Matrix<T>::operator == (const Matrix<T> &matr) 
-{
-if (this->rows!=matr.rows || this->columns!=matr.columns) 
-	{
-	throw "Wrong sizes of matrixes\n";
+bool Matrix<T>::operator == (const Matrix<T> &matr) {
+	if (this->rows != matr.rows || this->columns != matr.columns) {
+		throw "Wrong sizes of matrixes\n";
 	}
 
-	for (int i = 0; i < rows; i++) 
-	{
-		for (int j = 0; j < columns; j++) 
-		{
-			if (_matrix[i][j] != matr._matrix[i][j]) 
-			{
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			if (_matrix[i][j] != matr._matrix[i][j]) {
 				return false;
 			}
 		}
 	}
 	return true;
 }
+
 template <typename T>
-T* Matrix<T>::operator [] (int index)
-{
-	if (index <= this->rows)
-	{
+T* Matrix<T>::operator [] (int index) {
+	if (index <= this->rows) {
 		return this->_matrix[index];
 	}
-	else
-	{
+	else {
 		return nullptr;
 	}
 }
+
 template <typename T>
 void Matrix<T>::Get_Matrix(string s) // получаем матрицу из файла
 {
@@ -116,6 +115,7 @@ void Matrix<T>::Get_Matrix(string s) // получаем матрицу из ф�
 		exit(0);
 	}
 }
+
 template <typename T>
 void Matrix<T>::Cout_Matrix() // вывод матрицы
 {
@@ -124,14 +124,13 @@ void Matrix<T>::Cout_Matrix() // вывод матрицы
 			cout << " " << _matrix[i][j];
 		};
 		cout << "\n";
-	}; 
+	};
 }
 
 template <typename T>
 Matrix<T>& Matrix<T>::operator =(const Matrix<T>& matrix1) {
-	if (this->rows!=matrix1.rows || this->columns!=matrix1.columns) 
-	{
-	throw "Wrong sizes of matrixes\n";
+	if (this->rows != matrix1.rows || this->columns != matrix1.columns) {
+		throw "Wrong sizes of matrixes\n";
 	}
 	if (this != &matrix1) {
 		(Matrix(matrix1)).swap(*this);
@@ -140,9 +139,8 @@ Matrix<T>& Matrix<T>::operator =(const Matrix<T>& matrix1) {
 }
 template <typename T>
 Matrix<T> Matrix<T>::operator +(const Matrix<T> &firstMatrix) {
-	if (this->rows!=firstMatrix.rows || this->columns!=firstMatrix.columns) 
-	{
-	throw "Wrong sizes of matrixes\n";
+	if (this->rows != firstMatrix.rows || this->columns != firstMatrix.columns) {
+		throw "Wrong sizes of matrixes\n";
 	}
 	Matrix result(this->rows, this->columns);
 	for (int i = 0; i < this->rows; i++) {
@@ -155,11 +153,10 @@ Matrix<T> Matrix<T>::operator +(const Matrix<T> &firstMatrix) {
 
 template <typename T>
 Matrix<T> Matrix<T>::operator *(const Matrix<T> &m) {
-if (this->rows!=m.rows || this->columns!=m.columns) 
-	{
-	throw "Wrong sizes of matrixes\n";
-	}row "Wrong sizes of matrixes\n";
+	if (this->rows != m.rows || this->columns != m.columns) {
+		throw "Wrong sizes of matrixes\n";
 	}
+
 	Matrix result(this->rows, m.columns);
 	int a = 0;
 
@@ -171,7 +168,9 @@ if (this->rows!=m.rows || this->columns!=m.columns)
 			}
 			result._matrix[row][col] = a;
 		}
+
 	}
+
 	return result;
 }
 
@@ -180,9 +179,11 @@ T Matrix<T>::get_rows() // получаем кол-во строк
 {
 	return rows;
 }
+
 template <typename T>
-T Matrix<T>::get_columns()// получаем кол-во столбцов 
+T Matrix<T>::get_columns() // получаем кол-во столбцов 
 {
 	return columns;
 }
 
+#endif
