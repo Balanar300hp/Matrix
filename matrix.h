@@ -1,6 +1,8 @@
 #include <fstream> 
 #include <string> 
 using namespace std;
+
+template <typename T>
 class Matrix {
 public:
 	Matrix();
@@ -12,7 +14,7 @@ public:
 	Matrix &operator=(const Matrix &matrix);
 	Matrix operator +(const Matrix& firstMatrix);
 	Matrix operator *(int num);
-	int* operator [](int i);
+	T* operator [](int i);
 	int get_rows();
 	int get_columns();
 	friend std::ostream & operator<< <>(std::ostream & output, const Matrix & matrix); 
