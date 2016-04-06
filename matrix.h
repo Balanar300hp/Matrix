@@ -5,6 +5,14 @@
 #include <fstream> 
 #include <string> 
 using namespace std;
+template <typename T>
+class Matrix;
+
+template <class T>
+ostream & operator<<(ostream & output, const CMatrix<T> &);
+
+template <class T>
+istream & operator>>(istream & input, CMatrix<T> &);
 
 template <typename T>
 class Matrix {
@@ -21,8 +29,8 @@ public:
 	T* operator [](int i);
 	int get_rows();
 	int get_columns();
-	friend std::ostream & operator<< <>(std::ostream & output, const Matrix & matrix);
-	friend std::istream & operator>> <>(std::istream & input, Matrix & matrix);
+	friend ostream & operator<< <>(std::ostream & output, const Matrix<T> & matrix);
+	friend istream & operator>> <>(std::istream & input, Matrix<T> & matrix);
 private:
 	void swap(Matrix & m1);
 	string s{};
