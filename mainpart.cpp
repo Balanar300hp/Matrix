@@ -6,7 +6,7 @@
 #define MATR_CPP
 
 template <typename T>
-std::ostream &operator << (ostream &os, const Matrix<T> &temp) {
+ostream &operator << (ostream &os, const Matrix<T> &temp) {
 	if (temp.columns == 0 || temp.rows == 0 ||temp._matrix == nullptr) {
 		throw "Empty matrix\n";
 	}
@@ -20,7 +20,7 @@ std::ostream &operator << (ostream &os, const Matrix<T> &temp) {
 }
 
 template <typename T>
-std::istream &operator >> (istream &input, Matrix<T> &matr) {
+:istream &operator >> (istream &input, Matrix<T> &matr) {
 	for (int i = 0; i < matr.rows; i++) {
 		for (int j = 0; j < matr.columns; j++) {
 			try {
