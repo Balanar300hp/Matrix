@@ -7,6 +7,9 @@
 
 template <typename T>
 std::ostream &operator << (ostream &os, const Matrix<T> &temp) {
+	if (temp.columns == 0 || temp.rows == 0 ||temp._matrix == nullptr) {
+		throw "Empty matrix\n";
+	}
 	for (int i = 0; i < temp.rows; i++) {
 		for (int j = 0; j < temp.columns; j++) {
 			os << temp._matrix[i][j] << " ";
@@ -20,8 +23,13 @@ template <typename T>
 std::istream &operator >> (istream &input, Matrix<T> &matr) {
 	for (int i = 0; i < matr.rows; i++) {
 		for (int j = 0; j < matr.columns; j++) {
-			if (!(input >> matr._matrix[i][j])) {
-				throw "exception in fill matrix";
+			try {
+				if (!(input >> matrix.matrix[i][j])) {
+					throw "Error in input stream\n";
+				}
+			}
+			catch (...) {
+				throw "Ooops\n";
 			}
 		}
 	}
