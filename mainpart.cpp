@@ -5,6 +5,7 @@
 #ifndef MATR_CPP
 #define MATR_CPP
 
+ 
 template <typename T>
 ostream &operator << (ostream &os, const Matrix<T> &temp) {
 	if (temp.columns == 0 || temp.rows == 0 ||temp._matrix == nullptr) {
