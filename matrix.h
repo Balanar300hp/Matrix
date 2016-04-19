@@ -33,9 +33,9 @@ public:
 	friend istream & operator>> <>(std::istream & input, Matrix<T> & matrix);
 private:
 	void swap(Matrix & m1);
-	string s{};
-	int rows{};
-	int columns{};
-	int **_matrix{};
+	string s;
+	int rows;
+	int columns;
+	T **_matrix;
 };
 #endif
