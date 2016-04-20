@@ -1,41 +1,51 @@
 #pragma once
 #ifndef MATR_H
-#define MATR_H
-#include "stdafx.h"
-#include <fstream> 
-#include <string> 
-using namespace std;
+#define NATR_H
+#include "MatrixException.h"
+#include <iostream>
+#include <cstring> 
+
 template <typename T>
 class Matrix;
 
 template <class T>
-ostream & operator<<(ostream & output, const CMatrix<T> &);
+std::ostream & operator<<(std::ostream & output, const Matrix<T> &);
 
 template <class T>
-istream & operator>>(istream & input, CMatrix<T> &);
+std::istream & operator>>(std::istream & input, Matrix<T> &);
+
 
 template <typename T>
 class Matrix {
-public:
-	Matrix();
-	Matrix(int _rows, int _columns);
-	Matrix(const Matrix &matrix);
-	~Matrix();
-	void Get_Matrix(string s);
-	void Cout_Matrix();
-	Matrix &operator=(const Matrix &matrix);
-	Matrix operator +(const Matrix& firstMatrix);
-	Matrix operator *(int num);    
-	T* operator [](int i);
-	int get_rows();
-	int get_columns();
-	friend ostream & operator<< <>(std::ostream & output, const Matrix<T> & matrix);
-	friend istream & operator>> <>(std::istream & input, Matrix<T> & matrix);
 private:
-	void swap(Matrix & m1);
-	string s;
-	int rows;
+	void swap(Matrix & x);
+	T **matrix;
 	int columns;
-	T **_matrix;
+	int rows;
+
+public:
+	Matrix() : rows(0), columns(0), matrix(nullptr) {};	// Done
+	Matrix(unsigned int n, unsigned int m);					// Done
+	Matrix(T **matr, unsigned int _n, unsigned int _m);
+	Matrix(Matrix const & x);
+	~Matrix();
+
+	unsigned int rowsNumber() const;							// Done
+	unsigned int columnsNumber() const;							// Done
+	bool readFromFile(char *path);								// Done
+	Matrix &operator =(const Matrix& m2);
+	Matrix operator +(const Matrix& m2);						// Done
+	Matrix operator -(const Matrix& m2);						// Done
+	Matrix operator *(double num);								// Done
+	Matrix operator *(const Matrix& m2);						// Done
+	bool operator ==(const Matrix& m2);						// Done
+	T* operator [](unsigned int index);							// Done
+
+	friend std::ostream & operator<< <>(std::ostream & output, const Matrix & matrix);	// Done
+	friend std::istream & operator>> <>(std::istream & input, Matrix<T> & matrix);		// Done
 };
+
+
+#include "Matrix.cpp"
+
 #endif
